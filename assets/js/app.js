@@ -1,10 +1,11 @@
+// Initialize Firebase
 var config = {
-	apiKey: 'AIzaSyD6wIbk35rO9JLGNU3oUpbURXExLgtTuto',
-	authDomain: 'employeedb-8f84a.firebaseapp.com',
-	databaseURL: 'https://employeedb-8f84a.firebaseio.com',
-	projectId: 'employeedb-8f84a',
+	apiKey: 'AIzaSyBjBd9FDrDZF7GZlagjpM91V87peN9bAAI',
+	authDomain: 'train-schedule-a21b1.firebaseapp.com',
+	databaseURL: 'https://train-schedule-a21b1.firebaseio.com',
+	projectId: 'train-schedule-a21b1',
 	storageBucket: '',
-	messagingSenderId: '500955266079'
+	messagingSenderId: '489839293384'
 };
 firebase.initializeApp(config);
 
@@ -12,24 +13,24 @@ let database = firebase.database();
 
 $('#submit').on('click', function(event) {
 	event.preventDefault();
-	let name = $('#name')
+	let trainName = $('#trainName')
 		.val()
 		.trim();
-	let role = $('#role')
+	let destination = $('#destination')
 		.val()
 		.trim();
-	let startDate = $('#startDate')
+	let trainTime = $('#trainTime')
 		.val()
 		.trim();
-	let monthlyRate = $('#monthlyRate')
+	let frequency = $('#frequency')
 		.val()
 		.trim();
 	console.log(name);
 	database.ref().push({
-		employeeName: name,
-		employeeRole: role,
-		startdate: startDate,
-		monthlyrate: monthlyRate,
+		trainName: trainName,
+		destination: destination,
+		trainTime: trainTime,
+		frequency: frequency,
 		dateAdded: firebase.database.ServerValue.TIMESTAMP
 	});
 });
