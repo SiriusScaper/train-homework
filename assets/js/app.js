@@ -25,7 +25,6 @@ $('#submit').on('click', function(event) {
 	let frequency = $('#frequency')
 		.val()
 		.trim();
-	console.log(name);
 	database.ref().push({
 		trainName: trainName,
 		destination: destination,
@@ -34,3 +33,14 @@ $('#submit').on('click', function(event) {
 		dateAdded: firebase.database.ServerValue.TIMESTAMP
 	});
 });
+
+database
+	.ref()
+	.orderByChild('dateAdded')
+	.limitToLast(1)
+	.on('child_added', function(snapshot) {
+		console.log(snapshot.val().trainName);
+		$('#trainname-display').text(snapshot.val().trainName);
+		$('#destination-display').text(snapshot.val().destination);
+		$('#frequency-display').text(snapshot.val().frequency);
+	});
