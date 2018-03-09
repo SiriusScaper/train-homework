@@ -34,13 +34,59 @@ $('#submit').on('click', function(event) {
 	});
 });
 
+// Assumptions
+var tFrequency = frequency;
+
+// Time is 3:30 AM
+var firstTime = trainTime;
+
+// First Time (pushed back 1 year to make sure it comes before current time)
+var firstTimeConverted = moment(firstTime, 'HH:mm').subtract(1, 'years');
+console.log(firstTimeConverted);
+
+// Current Time
+var currentTime = moment();
+console.log('CURRENT TIME: ' + moment(currentTime).format('hh:mm'));
+
+// Difference between the times
+var diffTime = moment().diff(moment(firstTimeConverted), 'minutes');
+console.log('DIFFERENCE IN TIME: ' + diffTime);
+
+// Time apart (remainder)
+var tRemainder = diffTime % tFrequency;
+console.log(tRemainder);
+
+// Minute Until Train
+var tMinutesTillTrain = tFrequency - tRemainder;
+console.log('MINUTES TILL TRAIN: ' + tMinutesTillTrain);
+
+// Next Train
+var nextTrain = moment().add(tMinutesTillTrain, 'minutes');
+
 database
 	.ref()
 	.orderByChild('dateAdded')
 	.limitToLast(1)
 	.on('child_added', function(snapshot) {
-		console.log(snapshot.val().trainName);
-		$('#trainname-display').text(snapshot.val().trainName);
-		$('#destination-display').text(snapshot.val().destination);
-		$('#frequency-display').text(snapshot.val().frequency);
+		snapValue = snapshot.val();
+		console.log(snapshot.val());
+		$('#trainSchedule').append(
+			'<tr>\
+        <td>' +
+				snapValue.trainName +
+				'</td>\
+        <td>' +
+				snapValue.destination +
+				'</td>\
+        <td>' +
+				snapValue.frequency +
+				'</td>\
+        <td>' +
+				nextTrain +
+				'</td>\
+        <td>' +
+				tMinutesTillTrain +
+				'</td>\
+        </tr>'
+		);
 	});
